@@ -14,6 +14,10 @@ class MicropostsController < ApplicationController
 
   def like
     @micropost.update(likes:@micropost.likes+1)
+    like = Like.find_by(micropost_id: @micropost.id, user_id:current_user.id)
+    if like.nil?
+      like = Like.create(micropost_id: @micropost.id, user_id: current_user.id)
+    end
     redirect_to microposts_path, status: :see_other, notice: "Micropost was successfully liked."
   end
 
